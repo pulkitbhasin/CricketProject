@@ -1,8 +1,4 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[63]:
-
+#Web scraping anf feature engineering
 
 import bs4
 import requests
@@ -10,10 +6,6 @@ import io
 import lxml
 import pandas as pd
 import numpy as np
-
-
-# In[64]:
-
 
 #Function that takes a cricinfo link as an argument and creates a dataframe with data stored in it
 
@@ -32,9 +24,6 @@ def getTableFromLink(link):
             column_marker += 1
         row_marker += 1
     return new_table
-
-
-# In[71]:
 
 
 #Conduct feature engineering on batting data of each player
@@ -147,9 +136,6 @@ def feature_engineering_batsmen(dataset):
     return dataset
 
 
-# In[73]:
-
-
 #Create dataframe for each World Cup
 
 dataset_batsmen_2000 = feature_engineering_batsmen(getTableFromLink("https://stats.espncricinfo.com/ci/engine/records/averages/batting_bowling_by_team.html?id=2138;team=1854;type=tournament"))
@@ -165,9 +151,6 @@ dataset_batsmen_2016 = feature_engineering_batsmen(getTableFromLink("https://sta
 #Concatenate all dataframes
 batsmen_datasets = [dataset_batsmen_2000, dataset_batsmen_2002, dataset_batsmen_2004, dataset_batsmen_2006, dataset_batsmen_2008, dataset_batsmen_2010, dataset_batsmen_2012, dataset_batsmen_2014, dataset_batsmen_2016]
 batsmen_dataset = pd.concat(batsmen_datasets)
-
-
-# In[74]:
 
 
 #Function to create dataframe with World Cup bowling statistics for each U-19 player
@@ -187,9 +170,6 @@ def getTableFromLinkBowler(link):
             column_marker += 1
         row_marker += 1
     return new_table
-
-
-# In[75]:
 
 
 #Feature engineering for bowling sattistics of U-19 players
@@ -293,9 +273,6 @@ def feature_engineering_bowler(df):
     return df
 
 
-# In[76]:
-
-
 #Creating a dataframe for bowling statistics of each player for each World Cup
 
 bowler_2000 = feature_engineering_bowler(getTableFromLinkBowler("https://stats.espncricinfo.com/ci/engine/records/averages/batting_bowling_by_team.html?id=2138;team=1854;type=tournament"))
@@ -307,9 +284,6 @@ bowler_2010 = feature_engineering_bowler(getTableFromLinkBowler("https://stats.e
 bowler_2012 = feature_engineering_bowler(getTableFromLinkBowler("https://stats.espncricinfo.com/icc-under19-world-cup-2012/engine/records/averages/batting_bowling_by_team.html?id=6767;team=1854;type=tournament"))
 bowler_2014 = feature_engineering_bowler(getTableFromLinkBowler("https://stats.espncricinfo.com/icc-under-19-world-cup-2014/engine/records/averages/batting_bowling_by_team.html?id=8909;team=1854;type=tournament"))
 bowler_2016 = feature_engineering_bowler(getTableFromLinkBowler("https://stats.espncricinfo.com/icc-under-19-world-cup-2016/engine/records/averages/batting_bowling_by_team.html?id=10799;team=1854;type=tournament"))
-
-
-# In[77]:
 
 
 #Inputting whether each player got into the team or not
@@ -367,9 +341,6 @@ bowler_2016["Played for India"][14] = True
 bowler_2016["Played for India"][3] = True
 
 
-# In[78]:
-
-
 #Inputting whether a player was captain or not
 
 bowler_2000.insert(8, "Captain", 0)
@@ -403,17 +374,11 @@ bowlers = [bowler_2000, bowler_2002, bowler_2004, bowler_2006, bowler_2008, bowl
 bowling_dataset = pd.concat(bowlers)
 
 
-# In[79]:
-
-
 #Cleaning indices
 
 bowling_dataset = bowling_dataset.set_index(np.arange(121))
 batsmen_dataset = batsmen_dataset.copy(deep = True)
 batsmen_dataset = batsmen_dataset.set_index(np.arange(121))
-
-
-# In[82]:
 
 
 #Column concatentation of batsmen and bowlers statistics
@@ -422,7 +387,8 @@ final_dataset = pd.concat([batsmen_dataset, bowling_dataset], axis = 1)
 final_dataset = final_dataset.drop(columns = ["Bowler Name"])
 
 
-# In[ ]:
+#Exporting dataframe to excel to store
+final_dataset.to_csv("U-19 World Cup Dataset.csv")
 
 
 
