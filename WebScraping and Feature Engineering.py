@@ -1,4 +1,4 @@
-#Web scraping anf feature engineering
+#Web scraping and feature engineering
 
 import bs4
 import requests
@@ -387,7 +387,8 @@ final_dataset = pd.concat([batsmen_dataset, bowling_dataset], axis = 1)
 final_dataset = final_dataset.drop(columns = ["Bowler Name"])
 
 
-#Exporting dataframe to excel to store
+#Extracting batsmen and exporting dataset to spreadsheet
+battingDataset = final_dataset.take([0, 2, 4, 5, 6, 7, 9, 10, 12, 14, 16, 17, 18, 19, 22, 23, 24, 26, 27, 28, 30, 31, 33, 34, 35, 36, 39, 40, 41, 42, 45, 47, 48, 54, 59, 60, 61, 62, 63, 64, 70, 71, 72, 73, 74, 75, 78, 79, 80, 81, 84, 85, 87, 89, 90, 93, 94, 96, 97, 98, 102, 103, 104, 105, 106, 107, 108, 109, 110, 113, 114, 115, 116, 118])
 final_dataset.to_csv("U-19 World Cup Dataset.csv")
 
 
